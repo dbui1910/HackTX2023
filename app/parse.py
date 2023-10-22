@@ -25,6 +25,5 @@ def parseMessage(text):
 
     # Extract the response
     stringSQLCall = response['choices'][0]['message']['content']
-    print(stringSQLCall)
     return stringSQLCall
 
