@@ -11,7 +11,7 @@ app = Flask(__name__)
 
 @app.route('/parseMessage', methods=['GET','POST'])
 def parseText():
-    text = "U.S.P.S - The package has arruved at the warehouse and cannot be delivered due to incomplete address information.Confirm your address at the link. https://lihi3.cc/wvfsR "
+    text = "U.S.P.S - The package has arrived at the warehouse and cannot be delivered due to incomplete address information.Confirm your address at the link. https://lihi3.cc/wvfsR "
     stringSQLCall = parse.parseMessage(text)
     return stringSQLCall 
 
