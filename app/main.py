@@ -9,6 +9,7 @@ from kivy.uix.popup import Popup
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.graphics import Color, Rectangle
 import requests
+import json
 
 class MessageApp(App):
     def __init__(self, **kwargs):
@@ -91,22 +92,34 @@ class MessageApp(App):
         
 
         if response.status_code == 200:
-            # parsed_message = response.json().get("result")
-            parsed_message = "Successfull"
-            self.display_message(parsed_message)  # Call a method to display the message on a new screen
-            if self.popup:
-                self.popup.dismiss()  # Close the popup
+            try:
+                response_data = response.json()  # Parse the JSON response
+                #messages = response_data.get("messages", [])  # Get the list of messages
+                message = "The link is scam"
+                self.display_messages(message)  # Call a method to display the messages on a new screen
+            except json.JSONDecodeError as e:
+                print("Error parsing JSON response:", e)
         else:
-            print("Error fetching message from the backend")
+            print("Error fetching messages from the backend")
 
-    def display_message(self, message):
+    def display_message(self, messages):
         #Create a new screen to display the fetched message
         message_screen = Screen(name='message')
         layout = BoxLayout(orientation='vertical', spacing=10)
-        message_label = Label(text=message)
+        message_label = Label(text=messages)
         layout.add_widget(message_label)
         message_screen.add_widget(layout)
         self.screen_manager.switch_to(message_screen)
+        # Create a new screen to display the fetched messages
+        # message_screen = Screen(name='message')
+        # layout = BoxLayout(orientation='vertical', spacing=10)
+
+        # for message in messages:
+        #     message_label = Label(text=message)
+        #     layout.add_widget(message_label)
+
+        # message_screen.add_widget(layout)
+        # self.screen_manager.switch_to(message_screen)
         
     def send_message(self, instance):
         message_text = self.text_input_message.text
